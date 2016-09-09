@@ -1,4 +1,4 @@
-#ifndef DEFINES_H //"defines.h"
+#ifndef DEFINES_H //defines.h
 #define DEFINES_H
 
 #define _init_ 0
@@ -9,7 +9,7 @@
 #define _ATRIB_ 5
 #define ATRIB 6
 #define OPER 7
-#define ARTIM 8
+#define ARITM 8
 #define COMMENT 9
 #define ERROR 10
 #define END -1
