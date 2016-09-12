@@ -68,9 +68,10 @@ int main(int argc, char *argv[])
 	if(!file)
 		die("Could not open file.");
 	
-	while(token != -1))
+	while(token != 10 && token != 13))
 	{
 		token = lexic(file);
+		state_resolver(token);
 	}
 
 
