@@ -2,8 +2,8 @@
 #define TABLE_H
 
 int trans_table[12][19] = 
-{/*	L |  D | . | ESPAÇO | TAB | \n |"*//* | _ | EOF | { | } | < | - | OP_R | 	OP_A | ( | ) | ; | OUTRO |*/
-/*init*/ ID, INT, ERROR, END, END, END, STR, ERROR, _eof_, COMMENT, ERROR, _ATRIB_, ARITM, OPER, ARITM, END, END, END, ERROR,
+{/*	L |  D | . | ESPAÇO | TAB | \n |"*//* | _ | EOF | { | } | < | - | OP_R | OP_A | ( | ) | ; | OUTRO |*/
+/*init*/ ID, INT, ERROR, _init_, END, _init_, STR, ERROR, _eof_, COMMENT, ERROR, _ATRIB_, ARITM, OPER, ARITM, END, END, END, ERROR,
 /*ID*/	ID, ID, ERROR, END, END, END, ERROR, ID, _eof_, COMMENT, ERROR, END, END, END, END, END, END, END, ERROR,
 /*INT*/ ERROR, INT, REAL, END, END, END, ERROR, ERROR, _eof_, COMMENT, ERROR, END, END, END, END, ERROR, END, END, ERROR,
 /*REAL*/ ERROR, REAL, ERROR, END, END, END, ERROR, ERROR, _eof_, COMMENT, ERROR, END, END, END, END, ERROR, ERROR, END, ERROR,
