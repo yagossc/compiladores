@@ -34,18 +34,19 @@ int lexic(FILE *file)
 {
 	int state = _init_;
 	char c = fgetc(file);
+	int flag = 0;
 
 	while(trans_table[state][column_resolver(c)] != END)
 	{
 		state = trans_table[state][column_resolver(c)];
 		c = fgetc(file);
-
+	
 	}
-	if(c == '"' || c == '}')
-		 return state;
 
-	ungetc(c, file);
+	if(state != _init_ && c != '"' && c != '}') ungetc(c, file);
+	
 	return state;
+
 }
 
 int main(int argc, char *argv[])
@@ -61,7 +62,7 @@ int main(int argc, char *argv[])
 	while(token != ERROR && token != _eof_)
 	{
 		token = lexic(file);
-		if(token == _init_) fgetc(file);
+		//if(token == _init_) fgetc(file);
 		//printf("GOT HERE");
 		state_resolver(token);
 	}

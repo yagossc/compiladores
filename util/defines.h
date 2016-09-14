@@ -13,6 +13,7 @@
 #define COMMENT 9
 #define ERROR 10
 #define _eof_ 11
+#define PT_V 12
 #define END -1
 
 
