@@ -51,10 +51,14 @@ void state_resolver(int state)
 	else if(state == ERROR)
 		print_token("Error");
 	else if(state == _eof_)
+<<<<<<< HEAD
 		print_token("End of file");
 	else if(state == PT_V)
 		print_token("PT_V");
 }
+=======
+		print_token("EOF");
+>>>>>>> 0f197d5100236b950174abb0ee47ed150604e41c
 
 int peculiar(char c, int state)
 {

@@ -13,9 +13,14 @@
 #define COMMENT 9
 #define ERROR 10
 #define _eof_ 11
+<<<<<<< HEAD
 #define PT_V 12
+=======
+#define AB_P 12
+#define FC_P 13
+#define PT_V 14
+>>>>>>> 0f197d5100236b950174abb0ee47ed150604e41c
 #define END -1
-
 
 
 #endif
