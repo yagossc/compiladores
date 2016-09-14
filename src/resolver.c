@@ -51,6 +51,6 @@ void state_resolver(int state)
 	else if(state == ERROR)
 		print_token("Error");
 	else if(state == _eof_)
-		print_token("End of file");
+		print_token("EOF");
 
 }

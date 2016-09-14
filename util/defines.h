@@ -13,8 +13,10 @@
 #define COMMENT 9
 #define ERROR 10
 #define _eof_ 11
+#define AB_P 12
+#define FC_P 13
+#define PT_V 14
 #define END -1
-
 
 
 #endif
