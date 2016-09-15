@@ -34,7 +34,6 @@ int lexic(FILE *file)
 {
 	int state = _init_;
 	char c = fgetc(file);
-	int flag = 0;
 
 	while(trans_table[state][column_resolver(c)] != END)
 	{

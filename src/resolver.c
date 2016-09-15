@@ -4,7 +4,8 @@
 #include "../util/defines.h"
 int column_resolver(char c)
 {
-	if(isalpha(c)) return 0;
+	if(c == 'E') return 18;
+	else if(isalpha(c)) return 0;
 	else if(isdigit(c)) return 1;
 	else if(c == '.') return 2;
 	else if(c == ' ') return 3;
@@ -22,7 +23,7 @@ int column_resolver(char c)
 	else if(c == '(') return 15;
 	else if(c == ')') return 16;
 	else if(c == ';') return 17;
-	else return 18;
+	else return 19;
 }
 
 void print_token(char *state)
@@ -33,48 +34,31 @@ void print_token(char *state)
 void state_resolver(int state)
 {
 	if(state == ID)
-		print_token("Identificador");
+		print_token("ID");
 	if(state == INT)
-		print_token("Inteiro");
+		print_token("INT");
 	else if(state == REAL)
-		print_token("Real");
+		print_token("REAL");
 	else if(state == STR)
-		print_token("String");
+		print_token("STR");
 	else if(state == _ATRIB_ || state == OPER)
-		print_token("Operador Relacional");
+		print_token("OPR");
 	else if(state == ATRIB)
-		print_token("Atribuicao");
+		print_token("RCB");
 	else if(state == ARITM)
-		print_token("Operador aritmetico");
+		print_token("OPM");
 	else if(state == COMMENT)
-		print_token("Comentario");
+		return;//print_token("Comentario");
 	else if(state == ERROR)
-		print_token("Error");
+		print_token("ERRO");
 	else if(state == _eof_)
-<<<<<<< HEAD
 		print_token("End of file");
+	else if(state == AB_P)
+		print_token("AB_P");
+	else if(state == FC_P)
+		print_token("FC_P");
 	else if(state == PT_V)
 		print_token("PT_V");
+	else if(state == EXP)
+		print_token("EXP");
 }
-=======
-		print_token("EOF");
->>>>>>> 0f197d5100236b950174abb0ee47ed150604e41c
-
-int peculiar(char c, int state)
-{
-	 
-	if(c == '"' || c == '}')
-		return state;
-	else if(c == ';')
-		return 17;
-	else
-		return 0;
-}
-	
-
-
-
-
-
-
-
