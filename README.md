@@ -10,6 +10,7 @@ TO DO
 > - **Count line feed for line information in ERROR message**;
 > - **Operadores relacionais >=, <=, <> não implementados corretamente**;
 > - **Como passar a tabela de símbolos para o parser**;
+
 > **Hashmap**(TABELA DE SÍMBOLOS);
 > - _O uso do hashmap é importante para facilitar o tratamento dos tokens passados a frente. Ponteiros e referências são manipulados mas eficientemente do que as strings em si.(?)_
 
