@@ -4,7 +4,9 @@ _notes to my self_
 USAGE
 =================
 **> cd src/**
+
 **> make**
+
 **> ./scanner ../test/font**
 
 
@@ -22,7 +24,7 @@ FILES
 > - **test/fonte**(_fonte do trabalho_);
 > - **test/test.txt**;
 > - **test/teste.txt**;
-> - **unity__tests/logic.c**(_arquivo de testes indiscriminados_);
+> - **unity_tests/logic.c**(_arquivo de testes indiscriminados_);
 
 TO DO
 ===================
