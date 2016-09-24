@@ -6,7 +6,7 @@
 #include "../util/resolver.h"
 #include <string.h>
 #include <errno.h>
-
+#define BUFFER 256
 
 void die(char* message)
 {
@@ -34,14 +34,21 @@ int lexic(FILE *file)
 {
 	int state = _init_;
 	char c = fgetc(file);
+	char *lex = malloc(sizeof(char)*BUFFER);
+	int i = 0;
+	memset(lex, '\0', BUFFER);
 
 	while(trans_table[state][column_resolver(c)] != END)
 	{
+		if(c != '\n' && c != ' '){
+			lex[i] = c;
+			i++;
+		}
 		state = trans_table[state][column_resolver(c)];
 		c = fgetc(file);
 	
 	}
-
+	printf("==>%s<==\n", lex);
 	if(state != _init_ && c != '"' && c != '}') ungetc(c, file);
 	
 	return state;

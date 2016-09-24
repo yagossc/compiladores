@@ -62,3 +62,48 @@ void state_resolver(int state)
 	else if(state == EXP)
 		print_token("EXP");
 }
+
+char *token_resolver(int state)
+{
+
+	char *token_name;
+
+	if(state == ID)
+		token_name = "ID";
+	if(state == INT)
+		token_name = "INT";
+	else if(state == REAL)
+		token_name = "REAL";
+	else if(state == STR)
+		token_name = "STR";
+	else if(state == _ATRIB_ || state == OPER)
+		token_name = "OPR";
+	else if(state == ATRIB)
+		token_name = "RCB";
+	else if(state == ARITM)
+		token_name = "OPM";
+	else if(state == COMMENT)
+		return;//print_token("Comentario");
+	else if(state == ERROR)
+		print_token("ERRO");
+	else if(state == _eof_)
+		print_token("End of file");
+	else if(state == AB_P)
+		print_token("AB_P");
+	else if(state == FC_P)
+		print_token("FC_P");
+	else if(state == PT_V)
+		print_token("PT_V");
+	else if(state == EXP)
+		print_token("EXP");
+
+	return token_name;
+}
+
+
+
+
+
+
+
+
