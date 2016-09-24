@@ -43,13 +43,13 @@ int main()
 	char *tes = "zzxx1234zzzss";
 	for(int i = 0; i < strlen(str); i++)
 	{
-		h += pow(43, i)*str[i];
+		h += pow(13, i)*str[i];
 		printf("%d: h = %ld\n", i, h);
 	}
 	 long teste = ULONG_MAX - h;
 	printf("TESTE: %lu\n", teste);
 	unsigned long hash = h%251;
-	printf("HUGE_H mod ULONG_MAX(hashmap size) = %ld\n", hash);
+	printf("==>HUGE_H mod ULONG_MAX(hashmap size) = %ld\n", hash);
 	h=0;
 	for(int i = 0; i < strlen(i1); i++)
 	{

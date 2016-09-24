@@ -1,31 +1,53 @@
 Projeto 1 da disciplina Compiladores 1 do curso de Eng. Computação da UFG.
 _notes to my self_
 
+USAGE
+=================
+**> cd src/**
+**> make**
+**> ./scanner ../test/font**
+
+
+FILES
+==================
+> - **README.md**;
+> - **src/Makefile**;
+> - **src/scanner.c**;
+> - **src/resolver.c**;
+> - **src/hashmap.c**(_nao usado de fato na execução_);
+> - **util/defines.h**;
+> - **util/table.h**;
+> - **util/resolver.h**;
+> - **util/hashmap.h**(_nao usado de fato na execução_);
+> - **test/fonte**(_fonte do trabalho_);
+> - **test/test.txt**;
+> - **test/teste.txt**;
+> - **unity__tests/logic.c**(_arquivo de testes indiscriminados_);
+
 TO DO
 ===================
 > - **Reconhecer ponto e vírgula**(OK!);
-> - **Reconhecer palavras de comando**;
+> - **Reconhecer palavras de comando**(OK!);
 > - **Reconhecer abre e fecha parêntesis**(OK!!);
-> - **Salvar o lexema para poder passá-lo adiante**;
-> - **Count line feed for line information in ERROR message**;
-> - **Operadores relacionais >=, <=, <> não implementados corretamente**;
-> - **Como passar a tabela de símbolos para o parser**;
+> - **Salvar o lexema para poder passá-lo adiante**(OK!!);
+> - **Count line feed for line information in ERROR message**(OK! COLUNA TB!);
+> - **Operadores relacionais >=, <=, <> não implementados corretamente**(CORRIGIDO!);
+> - **Como passar a tabela de símbolos para o parser**(POR ENQUANTO É SÓ PRINTAR AS ENTRADAS DA TABELA NA TELA);
 
 > **Hashmap**(TABELA DE SÍMBOLOS);
-> - _O uso do hashmap é importante para facilitar o tratamento dos tokens passados a frente. Ponteiros e referências são manipulados mas eficientemente do que as strings em si.(?)_
-
+> - _O uso do hashmap é importante para facilitar o tratamento dos tokens passados a frente. Ponteiros e referências são manipulados mas eficientemente do que as strings em si._
 
 HOW TO
 ===================
 > **Reconhecer palavras-chave:**
 > - Inicializar o hashmap com as palavras chave;
-> - Quando o analisador léxico lê um lexema que pode ser um identificador ele confere no hashmap se é uma palavra reservada (hashmapCheckReserved()?);
+> - Quando o analisador léxico lê um lexema que pode ser um identificador ele confere no hashmap se é uma palavra reservada (check_table());
 > - Caso seja uma palavra reservada ele retorna o token da tabela, caso contrário ele insere na tabela e retorna o token(id, atributo); 
 
 > **Hashmap:**
 > - De acordo com a tabela ASCII, os valores dos caracteres siginificativos (não resultam em erro/não são comentário) estão entre 34 e 122, sendo assim, a função hash poderá se basear nesse escopo de valores;
 > - Cada campo na tabela de símbolos contém informações como o lexema, token-name/tipo e o hash para confirmação de busca;
-> - No momento de identificar um token, deve ser feita conferência na tabela, não só para as palavras reservadas, mas também para lexemas já introduzidos. A mesma lógica mencionada acima deverá ser implementada: se for encontrada entrada na tabela retorne o token encontrado, caso contrário insira na tabela e retorne o token identificado;
+> - Obs.: No momento de identificar um token, deve ser feita conferência na tabela, não só para as palavras reservadas, mas também para lexemas já introduzidos. A mesma lógica mencionada acima deverá ser implementada: se for encontrada entrada na tabela retorne o token encontrado, caso contrário insira na tabela e retorne o token identificado;
 
 STUDY
 ===================
@@ -36,8 +58,7 @@ STUDY
 DÚVIDAS
 ===================
 
-> **Como a tabela hash se enquadra?**I
 > - **O analisador léxico recebe a stream de caracteres do programa fonte e agrupa os caracteres em sequências significativas chamadas LEXEMAS.
 Para cada lexema, o analisador léxico produz como saída um token na forma:**
 	_(token-name, atribute-value)_
-**A saída será transferida para analisador sintático. No token, o primeiro componente _token-name_ é um símbolo abstrato que é usado durante a análise sintática, e o segundo componente _atribute-value_ aponta para uma entrada na tabela de símbolos deste token.**
+**A saída será transferida para analisador sintático. No token, o primeiro componente _token-name_ é um símbolo abstrato que é usado durante a análise sintática, e o segundo componente _atribute-value_ aponta para uma entrada na tabela de símbolos deste token.(?)**

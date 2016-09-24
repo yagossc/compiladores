@@ -3,25 +3,25 @@
 #include <limits.h>
 #include <math.h>
 #include <string.h>
+#include <errno.h>
 #include "../util/defines.h"
-#define SIZE UINT_MAX
 
-struct Token
+
+typedef struct Token
 {
 	int set;
-	char *token_name;
-	char *lexem;
-	char *atribute;
-};
+	char token_name[MAX_ID];
+	char lexem[MAX_ID];
+	char atribute[MAX_ID];
+}t_token;
 
-struct Hashmap
+typedef struct Hashmap
 {
-	struct Token hmap[SIZE];
-};
-
-unsigned long hashFunction(char *id)
+	t_token hmap[SIZE];
+}t_hashmap;
+unsigned int hashFunction(char *id)
 {
-	unsigned long h = 0;
+	unsigned int h = 0;
 	for(int i = 0; i < strlen(id) || i < 10; i++)
 	{
 		h += pow(13, i)*id[i];
@@ -30,53 +30,93 @@ unsigned long hashFunction(char *id)
 	return h;
 }
 
-void insert_token(struct Hashmap * hm, char *lexem, char *token_name)
+void print_token(t_token token)
+{
+	printf("Token_name: %s; Lexem: %s; Atribute: \n", token.token_name, token.lexem);
+}
+void insert_token(t_hashmap * hm, char *lexem, char *token_name)
 {	
-	printf("GOT HERE TOO!\n");
+//	printf("INSERT TOKEN!\n");
 	unsigned int h = hashFunction(lexem);
-	printf("%u\n", h);
-	int size = sizeof(token_name)/sizeof(char);
-	printf("%d\n", size);
-	struct Token *token = &hm->hmap[h];
-	strncpy(token->token_name, token_name, size);
+	t_token token;
+	memset(token.token_name, '\0', MAX_ID);
+	memset(token.lexem, '\0', MAX_ID);
+	strncpy(token.token_name, token_name, strlen(token_name));
+	strncpy(token.lexem, lexem, strlen(lexem));
+	token.set = 1;
+	printf("***********NAME: %s   LEX: %s \n   SET: %d\n*********", token.token_name, token.lexem, token.set);
+	hm->hmap[h] = token;
+//	printf("END INSERT TOKEN\n");
 }
 
-void get_element(struct Hashmap *hm, char *lexem)
+t_token get_element(t_hashmap *hm, char *lexem)
 {
-	unsigned long h = hashFunction(lexem);
-	//char *s = hm->hmap[h]->token_name;
-	//printf("LEXEMA: %s\n", s);
+//	printf("GET ELEMENT!\n");
+//	printf("LEXEMA: %s\n", lexem);
+	unsigned int h = hashFunction(lexem);
+	printf("Indice H: %d\n", h);
+	
+	//if(hm->hmap[h].set)
+	//{
+		t_token token = hm->hmap[h];
+		printf("=============>TESTANDO<============\n");
+		print_token(hm->hmap[h]);
+		printf("====>LEXXXXEMA: %s<=====\n", hm->hmap[h].lexem);
+		return token;
+	//}
 }
 
-void initialize(struct Hashmap *hm)
+int check_table(t_hashmap *hm, char *lexem)
 {
-	printf("GOT HERE!\n");
+	printf("CHECK TABLE!\n");
+	unsigned int h = hashFunction(lexem);
+	if(hm->hmap[h].set)
+		return 1;
+	return 0;
+}
+void initialize_table(t_hashmap *hm)
+{
+	for(int i = 0; i < SIZE; i++)
+	{
+		t_token token = {.set = 0, .token_name="", .lexem="", .atribute=""};
+		hm->hmap[i] = token;
+//		printf("DID I GET HERE?\n");
+	}
 	char *init[] = 
 	{"inicio","varinicio",
 	 "varfim","escreva",
 	"leia", "se", "entao",
 	"fimse", "fim"};
-	int s = sizeof(init)/sizeof(char);
-	printf("tamanho = %d\n", s);
 	for(int i = 0; i < 9; i++)
 		printf("%s\n", init[i]);
-
+	char *token_name = "PALAVRA DE COMANDO";
 	for(int i = 0; i < 9; i++)
-		insert_token(hm, init[i], "PALAVRA DE COMANDO");
+		insert_token(hm, init[i], token_name);
 
+	
 }
+
+void set_token(t_token token, char *token_name, char *lexem)
+{
+	strncpy(token.token_name, token_name, strlen(token_name));
+	strncpy(token.token_name, token_name, strlen(token_name));
+}
+
+
+/*
 int main(int argc, char *argv[])
 {
 
-	struct Hashmap *table = malloc(sizeof(struct Hashmap));
-	struct Token *token = malloc(sizeof(struct Token));
+	t_hashmap *table = malloc(sizeof(t_hashmap));
+	
+	initialize_table(table);
+	t_token token = get_element(table, "inicio");
+	if(token.set)
+		printf("Token: %s\nLexem: %s\n", token.token_name, token.lexem);
 
-	token->token_name = "teste";
-	printf("%s\n", token->token_name);
+	insert_token(table, "teste", "ID");
+	token = get_element(table, "teste");
+	print_token(token);
 
-	for(int i = 0; i < UINT_MAX; i++)
-	{
-		table->hmap[i] = {.set = 0, .token_name = "", .lexem = "", .atribute = ""};
-	}
 	return 0;
-}
+	}*/

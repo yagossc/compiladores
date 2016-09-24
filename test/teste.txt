@@ -1,3 +1,7 @@
+<>
+<=2
++<=
+(B>2)
 ah 12 aa;
 2<2>2<>3
 <-
@@ -8,7 +12,7 @@ ah 12 aa;
 "dsadsadsa"
 {lalallal}
 lalal
-2E2131321
+2E2131321;
 2*(2
 {aaaaaaaaaaaaallallalalalaaaaaaaaaaaaaaaaaaaaaaa}
 ()
