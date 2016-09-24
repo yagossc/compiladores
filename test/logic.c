@@ -40,74 +40,78 @@ int main()
 	char *i8 = "fimse";
 	char *i9 = "fim";
 
-	for(int i = 0; i < strlen(i1); i++)
+	char *tes = "zzxx1234zzzss";
+	for(int i = 0; i < strlen(str); i++)
 	{
-		h += pow(127, i)*i1[i];
+		h += pow(43, i)*str[i];
+		printf("%d: h = %ld\n", i, h);
 	}
-	printf("HUGE H = %ld\n", h);
-
-	unsigned long hash = h%ULONG_MAX;
+	 long teste = ULONG_MAX - h;
+	printf("TESTE: %lu\n", teste);
+	unsigned long hash = h%251;
 	printf("HUGE_H mod ULONG_MAX(hashmap size) = %ld\n", hash);
-	printf("ULONG_MAX = %lld\n", LONG_MAX);
-/*	for(int i = 0; i < strlen(i2); i++)
-	{
-		h = (13*h + (int(i2[i])%70;
-	}
-	printf("%d\n", h);
+	h=0;
 	for(int i = 0; i < strlen(i1); i++)
 	{
-		h = (13*h + (int)str[i])%70;
-	}
-	printf("%d\n", h);
-	for(int i = 0; i < strlen(i1); i++)
+		h += pow(43, i)*i1[i];
+		printf("%d: h = %ld\n", i, h);
+	}hash = h%251;printf("HUGE_H mod ULONG_MAX(hashmap size) = %ld\n", hash);h=0;
+	for(int i = 0; i < strlen(i2); i++)
 	{
-		h = (13*h + (int)str[i])%70;
-	}
-	printf("%d\n", h);
-	for(int i = 0; i < strlen(i1); i++)
+		h += pow(43, i)*i2[i];
+		printf("%d: h = %ld\n", i, h);
+	}hash = h%251;printf("HUGE_H mod ULONG_MAX(hashmap size) = %ld\n", hash);h=0;
+	for(int i = 0; i < strlen(i3); i++)
 	{
-		h = (13*h + (int)str[i])%70;
-	}
-	printf("%d\n", h);
-	for(int i = 0; i < strlen(i1); i++)
+		h += pow(43, i)*i3[i];
+		printf("%d: h = %ld\n", i, h);
+	}hash = h%251;printf("HUGE_H mod ULONG_MAX(hashmap size) = %ld\n", hash);h=0;
+	for(int i = 0; i < strlen(i4); i++)
 	{
-		h = (13*h + (int)str[i])%70;
-	}
-	printf("%d\n", h);
-	for(int i = 0; i < strlen(i1); i++)
+		h += pow(43, i)*i4[i];
+		printf("%d: h = %ld\n", i, h);
+	}hash = h%251;printf("HUGE_H mod ULONG_MAX(hashmap size) = %ld\n", hash);h=0;
+	/*for(int i = 0; i < strlen(str); i++)
 	{
-		h = (13*h + (int)str[i])%70;
+		h += pow(43, i)*str[i];
+		printf("%d: h = %ld\n", i, h);
 	}
-	printf("%d\n", h);
-	for(int i = 0; i < strlen(i1); i++)
+	for(int i = 0; i < strlen(str); i++)
 	{
-		h = (13*h + (int)str[i])%70;
+		h += pow(43, i)*str[i];
+		printf("%d: h = %ld\n", i, h);
 	}
-	printf("%d\n", h);
-	for(int i = 0; i < strlen(i1); i++)
+	for(int i = 0; i < strlen(str); i++)
 	{
-		h = (13*h + (int)str[i])%70;
-	}
-	printf("%d\n", h);
-	for(int i = 0; i < strlen(i1); i++)
-	{
-		h = (13*h + (int)str[i])%70;
-	}
-	printf("%d\n", h);
-	for(int i = 0; i < strlen(i1); i++)
-	{
-		h = (13*h + (int)str[i])%70;
-	}
-	printf("%d\n", h);
-	for(int i = 0; i < strlen(i1); i++)
-	{
-		h = (13*h + (int)str[i])%70;
-	}
-	printf("%d\n", h);
-	for(int i = 0; i < strlen(i1); i++)
-	{
-		h = (13*h + (int)str[i])%70;
-	}
-	printf("%d\n", h);*/
+		h += pow(43, i)*str[i];
+		printf("%d: h = %ld\n", i, h);
+	}*/
+	printf("ULONG_MAX = %lu\n", ULONG_MAX);
+	
+
+	char c = 'a';
+
+	char d[128];
+	memset(d, '\0', 128);
+	d[0] = 'c';
+	d[1] = 'a';
+	d[2] = 's';
+	d[3] = 'a';
+	char *end = "\0";
+	strcat(d, end);
+//	char e = 'b';
+//	char *f = '\0';
+//	strcat(d, &e);
+//	strcat(d, f);
+	printf("%s\n", d);
+
+	char *strr = malloc(sizeof(char)*128);
+	for(int i = 0; i < 128; i++)
+		strr[i] = '\0';
+	strr[0] = 'f';
+	strr[1] = 'o';
+	strr[2] = 'i';
+
+	printf("%s\n", strr);
 	return 0;
 }
