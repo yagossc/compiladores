@@ -16,7 +16,7 @@ struct Token
 
 struct Hashmap
 {
-	struct Token *hmap[SIZE];
+	struct Token hmap[SIZE];
 };
 
 unsigned long hashFunction(char *id)
@@ -73,13 +73,10 @@ int main(int argc, char *argv[])
 
 	token->token_name = "teste";
 	printf("%s\n", token->token_name);
-	table->hmap[0] = *token;
-	printf("%s\n", table->hmap[0].token_name);
-//	initialize(table);
-	char *ini = "inicio";
-	char *tok = "palavra de comando";
-	insert_token(table, ini, tok);
-	get_element(table, "inicio");
 
+	for(int i = 0; i < UINT_MAX; i++)
+	{
+		table->hmap[i] = {.set = 0, .token_name = "", .lexem = "", .atribute = ""};
+	}
 	return 0;
 }
