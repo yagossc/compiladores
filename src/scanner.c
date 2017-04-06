@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
-#include "../util/defines.h"
-#include "../util/table.h"
-#include "../util/resolver.h"
 #include <string.h>
 #include <errno.h>
 #include <math.h>
+#include "../util/defines.h"
+#include "../util/table.h"
+#include "../util/resolver.h"
 
 unsigned int row = 0;
 unsigned int col = 0;
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 		state = lexic(file, lexem);
 		state_resolver(state, lexem, table);
 	}
-	if(state == ERROR) die_f("Token not indentified.", file, row, col-1);
+	if(state == ERROR) die_f("Token not indentified.", file, row, col+1);
 	fclose(file);
 	free(lexem);
 	free(table);

@@ -34,6 +34,7 @@ void print_token(t_token token)
 {
 	printf("Token_name: %s; Lexem: %s; Atribute: \n", token.token_name, token.lexem);
 }
+
 void insert_token(t_hashmap * hm, char *lexem, char *token_name)
 {	
 //	printf("INSERT TOKEN!\n");
@@ -83,13 +84,17 @@ void initialize_table(t_hashmap *hm)
 //		printf("DID I GET HERE?\n");
 	}
 	char *init[] = 
-	{"inicio","varinicio",
-	 "varfim","escreva",
-	"leia", "se", "entao",
-	"fimse", "fim"};
+	{	"inicio","varinicio",
+		"varfim","escreva",
+		"leia", "se", "entao",
+		"fimse", "fim"
+	};
+
 	for(int i = 0; i < 9; i++)
 		printf("%s\n", init[i]);
+
 	char *token_name = "PALAVRA DE COMANDO";
+
 	for(int i = 0; i < 9; i++)
 		insert_token(hm, init[i], token_name);
 
@@ -119,4 +124,4 @@ int main(int argc, char *argv[])
 	print_token(token);
 
 	return 0;
-	}*/
+}*/

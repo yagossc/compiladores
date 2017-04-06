@@ -9,7 +9,7 @@ inicio
 	leia B;
 	escreva "Digite A:";
 	leia A;
-	se(B>2)
+	se(B>2);
 	entao
 		se(B<=4)
 		entao
@@ -21,6 +21,8 @@ inicio
 	B<-B+3;
 	D<-B;
 	C<-5.0;
+	D<-6E32;
+	E<-4E4;
 	escreva "\nB=\n";
 	escreva D;
 	escreva "\n";
