@@ -9,8 +9,10 @@ USAGE
 
 **> ./scanner ../test/font**
 > Arquivo com exemplo de erro:
+
 **> ./scanner ../test/test.txt**
 > Arquivo com combinações arbitrárias de tokens:
+
 **> ./scanner ../test/teste.txt**
 
 FILES
