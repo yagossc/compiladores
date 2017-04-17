@@ -57,7 +57,7 @@ void insert_token(t_hashmap *hm, char *lexem, char *token_name)
 	hm->hmap[h] = token;
 }
 
-//Get hashmap's element
+//Get hashmap's (t_hashmap) element
 void get_element(t_hashmap *hm, char *lexem, t_token token)
 {
 	unsigned long h = hashFunction(lexem);
@@ -92,11 +92,9 @@ void initialize_table(t_hashmap *hm)
 	 "varfim","escreva",
 	"leia", "se", "entao",
 	"fimse", "fim"};
+	//Insert command words in t_hashmap
 	for(int i = 0; i < 9; i++)
-	{
-//		char *token_name = init[i];
 		insert_token(hm, init[i], "PALAVRA DE COMANDO");
-	}
 }
 
 //Populate and Set t_token
@@ -113,7 +111,7 @@ t_token set_token(t_token token, char *token_name, char *lexem, char *attribute)
 }
 
 
-//Resolve state's column
+//Resolve table's column
 int column_resolver(char c)
 {
 	if(c == 'E') return 19;
@@ -141,7 +139,7 @@ int column_resolver(char c)
 }
 
 
-//Resolve state on table give curr. state and character read from lexem
+//Resolve state on table given curr. state and character read from lexem
 void state_resolver(int state, char *lexem, t_hashmap *table)
 {
 	t_token token = {.set = 0, .token_name="", .lexem="", .attribute=""};
