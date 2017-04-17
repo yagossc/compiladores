@@ -1,0 +1,13 @@
+Em sistema Unix e no diretório raiz do projeto:
+> cd src/
+Compile o programa:
+> make
+Execute o programa:
+> ./scanner /path/to/source/file
+
+Há alguns arquivos de teste exemplos no diretório ~/test/:
+> ./scanner ../test/test.txt
+
+O código fonte do proejto também se encontra no diretório mencionado acima:
+> ./scanner ../test/fonte
+
