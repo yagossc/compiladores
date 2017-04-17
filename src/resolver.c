@@ -5,6 +5,7 @@
 #include <math.h>
 #include "../util/defines.h"
 
+//Typedef for token struct
 typedef struct Token
 {
 	int set;
@@ -13,11 +14,13 @@ typedef struct Token
 	char attribute[MAX_ID];
 }t_token;
 
+//Typedef for Hashmap (t_tokens array)
 typedef struct Hashmap
 {
 	t_token hmap[SIZE];
 }t_hashmap;
 
+//Calculates table's index over lexem
 unsigned long hashFunction(char *id)
 {
 	unsigned long h = 0;
@@ -25,30 +28,36 @@ unsigned long hashFunction(char *id)
 	{
 		h +=(int)id[i];
 	}
-	
+
 	return h;
 }
 
+//Print token elements
 void print_token(t_token token)
 {
 	if(token.set)
 		printf("TOKEN: %s | Lexem: %s | Atribute: %s |\n", token.token_name, token.lexem, token.attribute);
 }
 
-
+//Insert t_token into t_hashmap
 void insert_token(t_hashmap *hm, char *lexem, char *token_name)
 {	
+	//Calculates index
 	unsigned long h = hashFunction(lexem);
 	t_token token;
+	//Clear buffers
 	memset(token.token_name, '\0', MAX_ID);
 	memset(token.lexem, '\0', MAX_ID);
+	//Safely copy content to buffers
 	strncpy(token.token_name, token_name, strlen(token_name));
 	strncpy(token.lexem, lexem, strlen(lexem));
 	strncpy(token.attribute,"\0", 1);
+	//Set and atribute table's element
 	token.set = 1;
 	hm->hmap[h] = token;
 }
 
+//Get hashmap's element
 void get_element(t_hashmap *hm, char *lexem, t_token token)
 {
 	unsigned long h = hashFunction(lexem);
@@ -60,6 +69,7 @@ void get_element(t_hashmap *hm, char *lexem, t_token token)
 	}
 }
 
+//Check for existent entry at hashmap
 int check_table(t_hashmap *hm, char *lexem)
 {
 	unsigned long h = hashFunction(lexem);
@@ -68,8 +78,10 @@ int check_table(t_hashmap *hm, char *lexem)
 	return 1;
 }
 
+//Initialize hashtable(t_hashmap) with command words
 void initialize_table(t_hashmap *hm)
 {
+	//Populate array with 'empty' tokens
 	for(int i = 0; i < SIZE; i++)
 	{
 		t_token token = {.set = 0, .token_name="", .lexem="", .attribute="\0"};
@@ -87,6 +99,7 @@ void initialize_table(t_hashmap *hm)
 	}
 }
 
+//Populate and Set t_token
 t_token set_token(t_token token, char *token_name, char *lexem, char *attribute)
 {
 	token.set = 1;
@@ -100,6 +113,7 @@ t_token set_token(t_token token, char *token_name, char *lexem, char *attribute)
 }
 
 
+//Resolve state's column
 int column_resolver(char c)
 {
 	if(c == 'E') return 19;
@@ -127,6 +141,7 @@ int column_resolver(char c)
 }
 
 
+//Resolve state on table give curr. state and character read from lexem
 void state_resolver(int state, char *lexem, t_hashmap *table)
 {
 	t_token token = {.set = 0, .token_name="", .lexem="", .attribute=""};
@@ -160,8 +175,7 @@ void state_resolver(int state, char *lexem, t_hashmap *table)
 
 	
 	else if(state == COMMENT){}
-	else if(state == ERROR){}
-		//token =	set_token(token, "ERRO", lexem, "\0");
+	else if(state == ERROR){}	//token =	set_token(token, "ERRO", lexem, "\0");
 
 	else if(state == _eof_)
 		token =	set_token(token, "Eof", "End of file", "\0");
@@ -179,6 +193,7 @@ void state_resolver(int state, char *lexem, t_hashmap *table)
 		token = set_token(token, "NUM", lexem, "EXP");
 
 	else{token.set=0;}
-
+	
+	//At this stage of the assignment we must only print the t_token on screen
 	print_token(token);
 }
