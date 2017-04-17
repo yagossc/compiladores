@@ -68,6 +68,6 @@ DÚVIDAS
 > - **O analisador léxico recebe a stream de caracteres do programa fonte e agrupa os caracteres em sequências significativas chamadas LEXEMAS.
 Para cada lexema, o analisador léxico produz como saída um token na forma:**
 
-> - 	_(token-name/type, lexem, attribute)_
+> - _(token-name/type, lexem, attribute)_
 
 > - **A saída será transferida para analisador sintático. No token, o primeiro componente _token-name_ é um símbolo abstrato usado durante a análise sintática, e o segundo componente _attribute_ aponta para uma entrada na tabela de símbolos deste token.(????)**
