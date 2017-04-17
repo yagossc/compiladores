@@ -1,5 +1,5 @@
 Projeto 1 da disciplina Compiladores 1 do curso de Eng. Computação da UFG.
-_notes to my self_
+_notes to myself_
 
 USAGE
 =================
