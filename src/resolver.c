@@ -35,8 +35,12 @@ unsigned long hashFunction(char *id)
 //Print token elements
 void print_token(t_token token)
 {
+	char *s;
 	if(token.set)
-		printf("TOKEN: %s | Lexem: %s | Atribute: %s |\n", token.token_name, token.lexem, token.attribute);
+		printf("------------------------------\n[TOKEN]: %s\n[Lexem]: %s\n[Atribute]: %s\n",
+		token.token_name,
+		token.lexem,
+		token.attribute);
 }
 
 //Insert t_token into t_hashmap
