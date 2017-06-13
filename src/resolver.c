@@ -20,6 +20,20 @@ typedef struct Hashmap
 	t_token hmap[SIZE];
 }t_hashmap;
 
+//Typedef for Grammar Terminal Symbol (linked list element)
+typedef struct G_symbol
+{
+	t_token *token;
+	struct G_symbol *next;
+}g_symbol;
+
+//Typedef for Sintatic Analiser's Input buffer (linked list)
+typedef struct SintaticBuffer
+{
+	g_symbol *head;
+	g_symbol *tail;
+}s_buffer;
+
 //Calculates table's index over lexem
 unsigned long hashFunction(char *id)
 {
@@ -49,28 +63,33 @@ void insert_token(t_hashmap *hm, char *lexem, char *token_name)
 	//Calculates index
 	unsigned long h = hashFunction(lexem);
 	t_token token;
+
 	//Clear buffers
 	memset(token.token_name, '\0', MAX_ID);
 	memset(token.lexem, '\0', MAX_ID);
+
 	//Safely copy content to buffers
 	strncpy(token.token_name, token_name, strlen(token_name));
 	strncpy(token.lexem, lexem, strlen(lexem));
 	strncpy(token.attribute,"\0", 1);
+
 	//Set and atribute table's element
 	token.set = 1;
 	hm->hmap[h] = token;
 }
 
 //Get hashmap's (t_hashmap) element
-void get_element(t_hashmap *hm, char *lexem, t_token token)
+t_token get_element(t_hashmap *hm, char *lexem, t_token token)
 {
 	unsigned long h = hashFunction(lexem);
 
 	if(hm->hmap[h].set)
 	{
 		token = hm->hmap[h];
-		print_token(token);
+		//print_token(token);
 	}
+
+	return token;
 }
 
 //Check for existent entry at hashmap
@@ -91,11 +110,14 @@ void initialize_table(t_hashmap *hm)
 		t_token token = {.set = 0, .token_name="", .lexem="", .attribute="\0"};
 		hm->hmap[i] = token;
 	}
+
+	//Command words array
 	char *init[] = 
 	{"inicio","varinicio",
 	 "varfim","escreva",
 	"leia", "se", "entao",
 	"fimse", "fim"};
+
 	//Insert command words in t_hashmap
 	for(int i = 0; i < 9; i++)
 		insert_token(hm, init[i], "PALAVRA DE COMANDO");
@@ -113,7 +135,6 @@ t_token set_token(t_token token, char *token_name, char *lexem, char *attribute)
 		strncpy(token.attribute, "\0", 1);
 	return token;
 }
-
 
 //Resolve table's column
 int column_resolver(char c)
@@ -142,9 +163,56 @@ int column_resolver(char c)
 	else return 21;
 }
 
+//Insert symbol in Sintatic Analiser's Input Buffer
+void insert_word(s_buffer *buffer, t_token token)
+{
+//	print_token(token);
+
+//	printf("[SYSTEM]: Debugging token passage.\n");
+
+	g_symbol *symbol = malloc(sizeof(g_symbol));
+	symbol->token = &token;
+	if(!buffer->head)
+	{
+		buffer->head = symbol;
+		buffer->tail = symbol;
+	}
+	else
+	{
+		buffer->tail->next = symbol;
+		buffer->tail = symbol;
+		buffer->tail->next = NULL;
+	}
+
+//	printf("[SYSTEM]: TOKEN IN LIST\n");
+//	print_token(*(buffer->tail->token));
+}
+
+void print_buffer(s_buffer *buffer)
+{
+	g_symbol *aux = buffer->head;
+	while(aux != NULL)
+	{
+		t_token token = *(aux->token);
+		print_token(token);
+		aux = aux->next;
+	}
+}
+//Free Input Buffer (linked list)
+void free_buffer(s_buffer *buffer)
+{
+	g_symbol *aux = buffer->head;
+	while(aux != NULL)
+	{
+		free(aux->token);
+		free(aux);
+		aux = aux->next;
+	}
+//	free(buffer);
+}
 
 //Resolve state on table given curr. state and character read from lexem
-void state_resolver(int state, char *lexem, t_hashmap *table)
+t_token state_resolver(int state, char *lexem, t_hashmap *table, s_buffer *buffer)
 {
 	t_token token = {.set = 0, .token_name="", .lexem="", .attribute=""};
 	if(state == ID)
@@ -152,8 +220,8 @@ void state_resolver(int state, char *lexem, t_hashmap *table)
 		if(!check_table(table, lexem))
 			insert_token(table, lexem,"ID");
 			
-		get_element(table, lexem, token);
-		return;
+		token = get_element(table, lexem, token);
+//		return token;
 	}
 	else if(state == INT)
 		token = set_token(token, "NUM", lexem, "INT");
@@ -177,7 +245,7 @@ void state_resolver(int state, char *lexem, t_hashmap *table)
 
 	
 	else if(state == COMMENT){}
-	else if(state == ERROR){}	//token =	set_token(token, "ERRO", lexem, "\0");
+	else if(state == ERROR){} //token = set_token(token, "ERRO", lexem, "\0");
 
 	else if(state == _eof_)
 		token =	set_token(token, "Eof", "End of file", "\0");
@@ -197,5 +265,8 @@ void state_resolver(int state, char *lexem, t_hashmap *table)
 	else{token.set=0;}
 	
 	//At this stage of the assignment we must only print the t_token on screen
-	print_token(token);
+	//print_token(token);
+	insert_word(buffer, token);
+	return token;
 }
+

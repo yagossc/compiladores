@@ -1,16 +1,18 @@
+inicio
+varinicio
+varfim
 as
-10 7E4 b c
-d e 10 E
-10E10 5E2
+10 7E4
+{10E10 5E2
 10 a<b
 5.333E+32
 6E-2+2
 65.2E222222<-Benenene
-{kosakpodksa kopdsakopdsa
+kosakpodksa kopdsakopdsa
 kdksapodsapk
 dakdopakdpsad
 sakdpsakdaskpkposdkpad
 askodsaopkddkoasp
 adkpoas}
 FUCK
-
+fim

@@ -15,7 +15,7 @@ unsigned int col = 0;
 //Auxiliary global var. for counting columns
 unsigned int aux_col = 0;
 
-//End program on error
+//Terminate execution on error
 void die(char* message)
 {
         if(errno) {
@@ -26,7 +26,7 @@ void die(char* message)
         exit(1);
 }
 
-//End program and close source file stream on error
+//Terminate execution and close source file stream on error
 void die_f(char* message, FILE *file, int row, int col)
 {
         if(errno) {
@@ -87,26 +87,39 @@ int main(int argc, char *argv[])
 	FILE *file = fopen(argv[1], "r");
 	if(!file) die("Could not open file.");
 
+	//Initialize clean token
+	t_token token = {.set = 0, .token_name="", .lexem="", .attribute=""};
+
 	//Allocate hashmap
 	t_hashmap *table = malloc(sizeof(t_hashmap));
+
 	//Initialize table with command words
 	//View: resolver.c
 	initialize_table(table);
+	
+	//Allocate S.A. input buffer
+	s_buffer *input_buffer = malloc(sizeof(s_buffer));
 
 	//Loop until error or end of file
 	while(state != ERROR && state != _eof_)
 	{
 		//Current state
 		state = lexic(file, lexem);
+
 		//Resolve next state according to current state
 		//View: resolver.c
-		state_resolver(state, lexem, table);
+		token =	state_resolver(state, lexem, table, input_buffer);
+		//insert_word(input_buffer, token);
+		//print_token(token);
 	}
+	print_token(*(input_buffer->head->next->token));
+//	print_buffer(input_buffer);
 
 	//Check for error state
 	if(state == ERROR) die_f("Token not indentified.", file, row, col+1);
 
 	//Close stream and free heap
+//	free_buffer(input_buffer);
 	fclose(file);
 	free(lexem);
 	free(table);
