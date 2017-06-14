@@ -109,17 +109,17 @@ int main(int argc, char *argv[])
 		//Resolve next state according to current state
 		//View: resolver.c
 		token =	state_resolver(state, lexem, table, input_buffer);
-		//insert_word(input_buffer, token);
+		insert_word(input_buffer, token);
 		//print_token(token);
 	}
-	print_token(*(input_buffer->head->next->token));
+//	print_token(*(input_buffer->head->next->token));
 //	print_buffer(input_buffer);
 
 	//Check for error state
 	if(state == ERROR) die_f("Token not indentified.", file, row, col+1);
 
 	//Close stream and free heap
-//	free_buffer(input_buffer);
+	free_buffer(input_buffer);
 	fclose(file);
 	free(lexem);
 	free(table);

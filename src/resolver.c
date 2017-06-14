@@ -163,6 +163,16 @@ int column_resolver(char c)
 	else return 21;
 }
 
+void print_buffer(s_buffer *buffer)
+{
+	g_symbol *aux = buffer->head;
+	while(aux != buffer->tail)
+	{
+		print_token(*aux->token);
+		aux = aux->next;
+	}
+}
+
 //Insert symbol in Sintatic Analiser's Input Buffer
 void insert_word(s_buffer *buffer, t_token token)
 {
@@ -172,6 +182,7 @@ void insert_word(s_buffer *buffer, t_token token)
 
 	g_symbol *symbol = malloc(sizeof(g_symbol));
 	symbol->token = &token;
+//	print_token(*symbol->token);
 	if(!buffer->head)
 	{
 		buffer->head = symbol;
@@ -186,29 +197,22 @@ void insert_word(s_buffer *buffer, t_token token)
 
 //	printf("[SYSTEM]: TOKEN IN LIST\n");
 //	print_token(*(buffer->tail->token));
+	print_buffer(buffer);
 }
 
-void print_buffer(s_buffer *buffer)
-{
-	g_symbol *aux = buffer->head;
-	while(aux != NULL)
-	{
-		t_token token = *(aux->token);
-		print_token(token);
-		aux = aux->next;
-	}
-}
+
 //Free Input Buffer (linked list)
 void free_buffer(s_buffer *buffer)
 {
 	g_symbol *aux = buffer->head;
-	while(aux != NULL)
+	while(aux != buffer->tail)
 	{
-		free(aux->token);
+		//free(aux->token);
 		free(aux);
 		aux = aux->next;
 	}
-//	free(buffer);
+	free(aux);
+	free(buffer);
 }
 
 //Resolve state on table given curr. state and character read from lexem
@@ -266,7 +270,7 @@ t_token state_resolver(int state, char *lexem, t_hashmap *table, s_buffer *buffe
 	
 	//At this stage of the assignment we must only print the t_token on screen
 	//print_token(token);
-	insert_word(buffer, token);
+	//insert_word(buffer, token);
 	return token;
 }
 
