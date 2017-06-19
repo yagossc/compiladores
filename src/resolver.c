@@ -27,6 +27,59 @@ typedef struct Buffer
 	t_token buffer[SIZE];
 }s_buffer;
 
+//Typedef stack element
+typedef struct Element
+{
+	t_token *token;
+	t_token *prev;
+}t_element;
+
+//Typedef stack
+typedef struct Stack
+{
+	t_element *bot;
+	t_element *top;
+}t_stack;
+
+
+void stack_up(t_stack *stack, t_token *token)
+{
+	t_element *new = malloc(sizeof(t_element));
+	if(!stack->top && !stack->bot)
+	{
+		printf("[DEBBUG]: NO ELEMENTS\n");
+		new->token = token;
+		stack->bot = new;
+		stack->top = new;
+	}
+	else
+	{
+		new->token = token;
+		new->prev = stack->top->token;
+		stack->top = new;
+	}
+}
+
+void stack_down(t_stack *stack)
+{
+	t_token *aux;
+	if(!stack->top && !stack->bot)
+		printf("[DEBBUG]: Stack is empty!\n");
+	
+	else if(stack->top == stack->bot)
+	{
+		printf("[DEBBUG]: Emptying stack!\n");
+		free(stack->top);
+	}
+
+	else
+	{
+		aux = stack->top->token;
+		stack->top->token = stack->top->prev;
+		free(aux);
+	}
+		
+}
 //Calculates table's index over lexem
 unsigned long hashFunction(char *id)
 {

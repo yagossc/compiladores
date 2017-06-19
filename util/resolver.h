@@ -20,6 +20,22 @@ typedef struct Buffer
 	t_token buffer[SIZE];
 }s_buffer;
 
+typedef struct Element
+{
+	t_token *token;
+	t_token *prev;
+}t_element;
+
+typedef struct Stack
+{
+	t_element * bot;
+	t_element * top;
+}t_stack;
+
+void stack_up(t_stack *stack, t_token *token);
+
+void stack_down(t_stack *stack);
+
 unsigned int hashFunction(char *id);
 
 void insert_word(s_buffer *buffer, t_token token);

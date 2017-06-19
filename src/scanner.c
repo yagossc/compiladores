@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
 	if(!file) die("Could not open file.");
 
 	//Initialize clean token
-	t_token token = {.set = 0, .token_name="", .lexem="", .attribute=""};
+	t_token *token = malloc(sizeof(token)); //{.set = 0, .token_name="", .lexem="", .attribute=""};
 
 	//Allocate hashmap
 	t_hashmap *table = malloc(sizeof(t_hashmap));
@@ -104,6 +104,10 @@ int main(int argc, char *argv[])
 	//Initialize buffer
 	initialize_buffer(input_buffer);
 
+	//Create stack for stack_automata
+	t_stack *stack = malloc(sizeof(t_stack));
+
+
 	//Loop until error or end of file
 	while(state != ERROR && state != _eof_)
 	{
@@ -114,14 +118,17 @@ int main(int argc, char *argv[])
 		//View: resolver.c
 		input_buffer->buffer[i] = state_resolver(state, lexem, table, input_buffer);
 		if(input_buffer->buffer[i].set)
+		{
+			stack_up(stack, &input_buffer->buffer[i]);
 			i++;
+		}
 	}
-/*	i=0;
+	i=0;
 	while(input_buffer->buffer[i].set)
 	{
 		print_token(input_buffer->buffer[i]);
 		i++;
-	}*/
+	}
 
 	//Check for error state
 	if(state == ERROR) die_f("Token not indentified.", file, row, col+1);
