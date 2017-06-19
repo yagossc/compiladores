@@ -20,18 +20,11 @@ typedef struct Hashmap
 	t_token hmap[SIZE];
 }t_hashmap;
 
-//Typedef for Grammar Terminal Symbol (linked list element)
-typedef struct G_symbol
-{
-	t_token *token;
-	struct G_symbol *next;
-}g_symbol;
 
-//Typedef for Sintatic Analiser's Input buffer (linked list)
-typedef struct SintaticBuffer
+//Halfass solution to sintatic analyzer's buffer
+typedef struct Buffer
 {
-	g_symbol *head;
-	g_symbol *tail;
+	t_token buffer[SIZE];
 }s_buffer;
 
 //Calculates table's index over lexem
@@ -123,6 +116,14 @@ void initialize_table(t_hashmap *hm)
 		insert_token(hm, init[i], "PALAVRA DE COMANDO");
 }
 
+void initialize_buffer(s_buffer *buffer)
+{
+	for(int i = 0; i < SIZE; i++)
+	{
+		t_token token = {.set = 0, .token_name="", .lexem="", .attribute="\0"};
+		buffer->buffer[i] = token;
+	}
+}
 //Populate and Set t_token
 t_token set_token(t_token token, char *token_name, char *lexem, char *attribute)
 {
@@ -163,57 +164,7 @@ int column_resolver(char c)
 	else return 21;
 }
 
-void print_buffer(s_buffer *buffer)
-{
-	g_symbol *aux = buffer->head;
-	while(aux != buffer->tail)
-	{
-		print_token(*aux->token);
-		aux = aux->next;
-	}
-}
 
-//Insert symbol in Sintatic Analiser's Input Buffer
-void insert_word(s_buffer *buffer, t_token token)
-{
-//	print_token(token);
-
-//	printf("[SYSTEM]: Debugging token passage.\n");
-
-	g_symbol *symbol = malloc(sizeof(g_symbol));
-	symbol->token = &token;
-//	print_token(*symbol->token);
-	if(!buffer->head)
-	{
-		buffer->head = symbol;
-		buffer->tail = symbol;
-	}
-	else
-	{
-		buffer->tail->next = symbol;
-		buffer->tail = symbol;
-		buffer->tail->next = NULL;
-	}
-
-//	printf("[SYSTEM]: TOKEN IN LIST\n");
-//	print_token(*(buffer->tail->token));
-	print_buffer(buffer);
-}
-
-
-//Free Input Buffer (linked list)
-void free_buffer(s_buffer *buffer)
-{
-	g_symbol *aux = buffer->head;
-	while(aux != buffer->tail)
-	{
-		//free(aux->token);
-		free(aux);
-		aux = aux->next;
-	}
-	free(aux);
-	free(buffer);
-}
 
 //Resolve state on table given curr. state and character read from lexem
 t_token state_resolver(int state, char *lexem, t_hashmap *table, s_buffer *buffer)
@@ -248,7 +199,7 @@ t_token state_resolver(int state, char *lexem, t_hashmap *table, s_buffer *buffe
 		token = set_token(token, "OPM", lexem, "\0");
 
 	
-	else if(state == COMMENT){}
+	else if(state == COMMENT){token.set=0;}
 	else if(state == ERROR){} //token = set_token(token, "ERRO", lexem, "\0");
 
 	else if(state == _eof_)

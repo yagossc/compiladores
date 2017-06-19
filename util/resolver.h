@@ -14,25 +14,15 @@ typedef struct Hashmap
 	t_token hmap[SIZE];
 }t_hashmap;
 
-typedef struct G_symbol
-{
-	t_token *token;
-	struct G_symbol *next;
-}g_symbol;
 
-typedef struct SintaticBuffer
+typedef struct Buffer
 {
-	g_symbol *head;
-	g_symbol *tail;
+	t_token buffer[SIZE];
 }s_buffer;
 
 unsigned int hashFunction(char *id);
 
 void insert_word(s_buffer *buffer, t_token token);
-
-void free_buffer(s_buffer *buffer);
-
-void print_buffer(s_buffer *buffer);
 
 void print_token(t_token token);
 
@@ -41,6 +31,8 @@ void insert_token(t_hashmap *hm, char *lexem, char *token_name);
 t_token get_element(t_hashmap *hm, char *lexem, t_token token);
 
 void initialize_table(t_hashmap *hm);
+
+void initialize_buffer(s_buffer *buff);
 
 int check_table(t_hashmap *hm, char *lexem);
 
