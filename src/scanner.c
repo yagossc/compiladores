@@ -116,12 +116,12 @@ int main(int argc, char *argv[])
 		if(input_buffer->buffer[i].set)
 			i++;
 	}
-	i=0;
+/*	i=0;
 	while(input_buffer->buffer[i].set)
 	{
 		print_token(input_buffer->buffer[i]);
 		i++;
-	}
+	}*/
 
 	//Check for error state
 	if(state == ERROR) die_f("Token not indentified.", file, row, col+1);
