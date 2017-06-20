@@ -23,22 +23,22 @@ typedef struct Buffer
 typedef struct Element
 {
 	t_token *token;
-	t_token *prev;
+	struct Element *prev;
 }t_element;
 
 typedef struct Stack
 {
-	t_element * bot;
-	t_element * top;
+	t_element *bot;
+	t_element *top;
 }t_stack;
 
 void stack_up(t_stack *stack, t_token *token);
 
 void stack_down(t_stack *stack);
 
-unsigned int hashFunction(char *id);
+void free_stack(t_stack *stack);
 
-void insert_word(s_buffer *buffer, t_token token);
+unsigned int hashFunction(char *id);
 
 void print_token(t_token token);
 
@@ -56,5 +56,5 @@ int column_resolver(char c);
 
 t_token set_token(t_token token, char *token_name, char *lexem);
 
-t_token state_resolver(int state, char *lexem, t_hashmap *table, s_buffer *buffer);
+t_token state_resolver(int state, char *lexem, t_hashmap *table);
 

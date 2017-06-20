@@ -73,6 +73,7 @@ int lexic(FILE *file, char *lexem)
 
 }
 
+
 int main(int argc, char *argv[])
 {
 	int state;
@@ -107,7 +108,6 @@ int main(int argc, char *argv[])
 	//Create stack for stack_automata
 	t_stack *stack = malloc(sizeof(t_stack));
 
-
 	//Loop until error or end of file
 	while(state != ERROR && state != _eof_)
 	{
@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
 
 		//Resolve next state according to current state
 		//View: resolver.c
-		input_buffer->buffer[i] = state_resolver(state, lexem, table, input_buffer);
+		input_buffer->buffer[i] = state_resolver(state, lexem, table);
 		if(input_buffer->buffer[i].set)
 		{
 			stack_up(stack, &input_buffer->buffer[i]);
@@ -124,11 +124,18 @@ int main(int argc, char *argv[])
 		}
 	}
 	i=0;
-	while(input_buffer->buffer[i].set)
+/*	while(stack->bot != stack->top)
+	{
+		print_token(*(stack->top->token));
+		stack_down(stack);
+	}
+	print_token(*(stack->top->token));*/
+
+/*	while(input_buffer->buffer[i].set)
 	{
 		print_token(input_buffer->buffer[i]);
 		i++;
-	}
+	}*/
 
 	//Check for error state
 	if(state == ERROR) die_f("Token not indentified.", file, row, col+1);
@@ -137,6 +144,7 @@ int main(int argc, char *argv[])
 	fclose(file);
 	free(lexem);
 	free(table);
+	free_stack(stack);
 
 	return 0;
 }

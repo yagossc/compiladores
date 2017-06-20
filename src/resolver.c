@@ -31,7 +31,7 @@ typedef struct Buffer
 typedef struct Element
 {
 	t_token *token;
-	t_token *prev;
+	struct Element *prev;
 }t_element;
 
 //Typedef stack
@@ -41,7 +41,19 @@ typedef struct Stack
 	t_element *top;
 }t_stack;
 
+//Print token elements
+void print_token(t_token token)
+{
+	char *s;
+	if(token.set)
+		printf("------------------------------\n[TOKEN]: %s\n[Lexem]: %s\n[Atribute]: %s\n",
+		token.token_name,
+		token.lexem,
+		token.attribute);
+}
 
+//Put on top of the stack, 
+//a.k.a. PUSH
 void stack_up(t_stack *stack, t_token *token)
 {
 	t_element *new = malloc(sizeof(t_element));
@@ -55,31 +67,44 @@ void stack_up(t_stack *stack, t_token *token)
 	else
 	{
 		new->token = token;
-		new->prev = stack->top->token;
+		new->prev = stack->top;
 		stack->top = new;
 	}
 }
 
+//Remove from the top of the stack, 
+//a.k.a. POP
 void stack_down(t_stack *stack)
 {
-	t_token *aux;
+	printf("[DEBBUG]: Freeing stack\n");
+	print_token(*(stack->top->token));
+	t_element *aux;
 	if(!stack->top && !stack->bot)
 		printf("[DEBBUG]: Stack is empty!\n");
 	
 	else if(stack->top == stack->bot)
 	{
 		printf("[DEBBUG]: Emptying stack!\n");
-		free(stack->top);
+		free(stack);
 	}
-
 	else
 	{
-		aux = stack->top->token;
-		stack->top->token = stack->top->prev;
+		aux = stack->top;
+		stack->top = stack->top->prev;
 		free(aux);
 	}
-		
 }
+
+//Free entire data structure
+void free_stack(t_stack *stack)
+{
+	while(stack->top != stack->bot)
+		stack_down(stack);
+	print_token(*(stack->top->token));
+	free(stack->top);
+	free(stack);
+}
+
 //Calculates table's index over lexem
 unsigned long hashFunction(char *id)
 {
@@ -90,17 +115,6 @@ unsigned long hashFunction(char *id)
 	}
 
 	return h;
-}
-
-//Print token elements
-void print_token(t_token token)
-{
-	char *s;
-	if(token.set)
-		printf("------------------------------\n[TOKEN]: %s\n[Lexem]: %s\n[Atribute]: %s\n",
-		token.token_name,
-		token.lexem,
-		token.attribute);
 }
 
 //Insert t_token into t_hashmap
@@ -220,7 +234,7 @@ int column_resolver(char c)
 
 
 //Resolve state on table given curr. state and character read from lexem
-t_token state_resolver(int state, char *lexem, t_hashmap *table, s_buffer *buffer)
+t_token state_resolver(int state, char *lexem, t_hashmap *table)
 {
 	t_token token = {.set = 0, .token_name="", .lexem="", .attribute=""};
 	if(state == ID)
@@ -229,7 +243,6 @@ t_token state_resolver(int state, char *lexem, t_hashmap *table, s_buffer *buffe
 			insert_token(table, lexem,"ID");
 			
 		token = get_element(table, lexem, token);
-//		return token;
 	}
 	else if(state == INT)
 		token = set_token(token, "NUM", lexem, "INT");
@@ -274,7 +287,6 @@ t_token state_resolver(int state, char *lexem, t_hashmap *table, s_buffer *buffe
 	
 	//At this stage of the assignment we must only print the t_token on screen
 	//print_token(token);
-	//insert_word(buffer, token);
 	return token;
 }
 
