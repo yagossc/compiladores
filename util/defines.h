@@ -1,6 +1,7 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
+//Lexic analyzer MACROS
 #define _init_ 0
 #define ID 1
 #define INT 2
@@ -26,4 +27,6 @@
 #define MAX_ID 64
 #define BUFFER 256
 
+//Sintatic analyzer MACROS
+//...
 #endif
