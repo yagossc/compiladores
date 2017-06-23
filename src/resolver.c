@@ -173,16 +173,27 @@ void initialize_table(t_hashmap *hm)
 
 	//Command words array
 	char *init[] = 
-	{"inicio","varinicio",
-	 "varfim","escreva",
-	"leia", "se", "entao",
-	"fimse", "fim"};
+	{"inicio",
+	"varinicio",
+	"varfim",
+	"escreva",
+	"leia",
+	"se",
+	"entao",
+	"fimse",
+	"fim",
+	"literal",
+	"inteiro",
+	"real"};
 
 	//Insert command words in t_hashmap
-	for(int i = 0; i < 9; i++)
-		insert_token(hm, init[i], "PALAVRA DE COMANDO");
+	for(int i = 0; i < 12; i++)
+		insert_token(hm, init[i], "PALAVRA RESERVADA");
 }
 
+
+//Initialize sintatic buffer
+//Gonna change this to a linked list (please)
 void initialize_buffer(s_buffer *buffer)
 {
 	for(int i = 0; i < SIZE; i++)
@@ -191,6 +202,7 @@ void initialize_buffer(s_buffer *buffer)
 		buffer->buffer[i] = token;
 	}
 }
+
 //Populate and Set t_token
 t_token set_token(t_token token, char *token_name, char *lexem, char *attribute)
 {
