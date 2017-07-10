@@ -27,12 +27,21 @@ typedef struct Buffer
 	t_token buffer[SIZE];
 }s_buffer;
 
-//Typedef stack element
+//Typedef stack and list elements
 typedef struct Element
 {
+	int is_state;
+	int state;
 	t_token *token;
 	struct Element *prev;
 }t_element;
+
+//Typedef List
+typedef struct List
+{
+	t_element *tail;
+	t_element *head;
+}t_list;
 
 //Typedef stack
 typedef struct Stack
@@ -52,6 +61,47 @@ void print_token(t_token token)
 		token.attribute);
 }
 
+//Insert element into List and move tail
+void list_insert(t_list *list, t_token *token)
+{
+	t_element *new = malloc(sizeof(t_element));
+	new->token = token;
+	if(!list->head && !list->tail)
+	{
+//		printf("[DEBBUG]: NO ELEMENTS\n");
+		list->head = new;
+		list->tail = new;
+	}
+	else
+	{
+		list->tail->prev = new;
+		list->tail = new;
+	}
+}
+
+//Get element from list
+//For this assignment we'll get an element and already remove it from the list
+void list_get(t_list *list)
+{
+	t_element *aux;
+	if(!list->head && !list->tail)
+		printf("[DEBBUG]: List is empty\n");
+	else if(list->head == list->tail)
+	{
+		printf("[DEBBUG]: End of list\n");
+		print_token(*list->head->token);
+		free(list->head);
+		free(list);
+	}
+	else
+	{
+		print_token(*list->head->token);
+		aux = list->head->prev;
+		free(list->head);
+		list->head = aux;
+	}
+}
+
 //Put on top of the stack, 
 //a.k.a. PUSH
 void stack_up(t_stack *stack, t_token *token)
@@ -59,7 +109,7 @@ void stack_up(t_stack *stack, t_token *token)
 	t_element *new = malloc(sizeof(t_element));
 	if(!stack->top && !stack->bot)
 	{
-		printf("[DEBBUG]: NO ELEMENTS\n");
+//		printf("[DEBBUG]: NO ELEMENTS\n");
 		new->token = token;
 		stack->bot = new;
 		stack->top = new;
@@ -76,8 +126,8 @@ void stack_up(t_stack *stack, t_token *token)
 //a.k.a. POP
 void stack_down(t_stack *stack)
 {
-	printf("[DEBBUG]: Freeing stack\n");
-	print_token(*(stack->top->token));
+//	printf("[DEBBUG]: Freeing stack\n");
+	//print_token(*(stack->top->token));
 	t_element *aux;
 	if(!stack->top && !stack->bot)
 		printf("[DEBBUG]: Stack is empty!\n");
@@ -100,7 +150,7 @@ void free_stack(t_stack *stack)
 {
 	while(stack->top != stack->bot)
 		stack_down(stack);
-	print_token(*(stack->top->token));
+//	print_token(*(stack->top->token));
 	free(stack->top);
 	free(stack);
 }

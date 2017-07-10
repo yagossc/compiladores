@@ -22,15 +22,27 @@ typedef struct Buffer
 
 typedef struct Element
 {
+	int is_state;
+	int state;
 	t_token *token;
 	struct Element *prev;
 }t_element;
+
+typedef struct List
+{
+	t_element *tail;
+	t_element *head;
+}t_list;
 
 typedef struct Stack
 {
 	t_element *bot;
 	t_element *top;
 }t_stack;
+
+void list_insert(t_list *list, t_token *token);
+
+void list_get(t_list *list);
 
 void stack_up(t_stack *stack, t_token *token);
 

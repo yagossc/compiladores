@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
 	if(!file) die("Could not open file.");
 
 	//Initialize clean token
-	t_token *token = malloc(sizeof(token)); //{.set = 0, .token_name="", .lexem="", .attribute=""};
+	t_token token = {.set = 0, .token_name="", .lexem="", .attribute=""};
 
 	//Allocate hashmap
 	t_hashmap *table = malloc(sizeof(t_hashmap));
@@ -99,6 +99,9 @@ int main(int argc, char *argv[])
 	//View: resolver.c
 	initialize_table(table);
 	
+	//Allocate S.A. input buffer(list)
+	t_list *list = malloc(sizeof(t_list));
+
 	//Allocate S.A. input buffer
 	s_buffer *input_buffer = malloc(sizeof(s_buffer));
 
@@ -119,26 +122,29 @@ int main(int argc, char *argv[])
 		input_buffer->buffer[i] = state_resolver(state, lexem, table);
 		if(input_buffer->buffer[i].set)
 		{
+			//print_token(token);
+			list_insert(list, &input_buffer->buffer[i]);
 			stack_up(stack, &input_buffer->buffer[i]);
 			i++;
 		}
 	}
 	i=0;
-/*	while(stack->bot != stack->top)
+	if(state == ERROR) die_f("Token not indentified.", file, row+1, col+1);
+	while(list->head != list->tail)
 	{
-		print_token(*(stack->top->token));
-		stack_down(stack);
+		list_get(list);
 	}
-	print_token(*(stack->top->token));*/
+	list_get(list);
 
-/*	while(input_buffer->buffer[i].set)
+/*	printf("\n\n\nDiv\n\n\n");
+	while(input_buffer->buffer[i].set)
 	{
 		print_token(input_buffer->buffer[i]);
 		i++;
 	}*/
 
+//	printf("\n\n\nDiv\n\n\n");
 	//Check for error state
-	if(state == ERROR) die_f("Token not indentified.", file, row, col+1);
 
 	//Close stream and free heap
 	fclose(file);
