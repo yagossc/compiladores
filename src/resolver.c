@@ -10,6 +10,7 @@ typedef struct Token
 {
 	int set;
 	char token_name[MAX_ID];
+	int token_type;
 	char lexem[MAX_ID];
 	char attribute[MAX_ID];
 }t_token;
@@ -168,7 +169,7 @@ unsigned long hashFunction(char *id)
 }
 
 //Insert t_token into t_hashmap
-void insert_token(t_hashmap *hm, char *lexem, char *token_name)
+void insert_token(t_hashmap *hm, char *lexem, char *token_name, int token_type)
 {	
 	//Calculates index
 	unsigned long h = hashFunction(lexem);
@@ -182,6 +183,9 @@ void insert_token(t_hashmap *hm, char *lexem, char *token_name)
 	strncpy(token.token_name, token_name, strlen(token_name));
 	strncpy(token.lexem, lexem, strlen(lexem));
 	strncpy(token.attribute,"\0", 1);
+
+	//Set token type
+	token.token_type = token_type;
 
 	//Set and atribute table's element
 	token.set = 1;
@@ -217,7 +221,7 @@ void initialize_table(t_hashmap *hm)
 	//Populate array with 'empty' tokens
 	for(int i = 0; i < SIZE; i++)
 	{
-		t_token token = {.set = 0, .token_name="", .lexem="", .attribute="\0"};
+		t_token token = {.set = 0, .token_name="", .token_type = -2, .lexem="", .attribute="\0"};
 		hm->hmap[i] = token;
 	}
 
@@ -238,7 +242,7 @@ void initialize_table(t_hashmap *hm)
 
 	//Insert command words in t_hashmap
 	for(int i = 0; i < 12; i++)
-		insert_token(hm, init[i], "PALAVRA RESERVADA");
+		insert_token(hm, init[i], "PALAVRA RESERVADA", ID);
 }
 
 
@@ -248,13 +252,13 @@ void initialize_buffer(s_buffer *buffer)
 {
 	for(int i = 0; i < SIZE; i++)
 	{
-		t_token token = {.set = 0, .token_name="", .lexem="", .attribute="\0"};
+		t_token token = {.set = 0, .token_name="", .token_type=-2, .lexem="", .attribute="\0"};
 		buffer->buffer[i] = token;
 	}
 }
 
 //Populate and Set t_token
-t_token set_token(t_token token, char *token_name, char *lexem, char *attribute)
+t_token set_token(t_token token, char *token_name, char *lexem, char *attribute, int token_type)
 {
 	token.set = 1;
 	strncpy(token.token_name, token_name, strlen(token_name));
@@ -263,6 +267,7 @@ t_token set_token(t_token token, char *token_name, char *lexem, char *attribute)
 		strncpy(token.attribute, attribute, strlen(attribute));
 	else
 		strncpy(token.attribute, "\0", 1);
+	token.token_type = token_type;
 	return token;
 }
 
@@ -302,48 +307,48 @@ t_token state_resolver(int state, char *lexem, t_hashmap *table)
 	if(state == ID)
 	{
 		if(!check_table(table, lexem))
-			insert_token(table, lexem,"ID");
+			insert_token(table, lexem,"ID", ID);
 			
 		token = get_element(table, lexem, token);
 	}
 	else if(state == INT)
-		token = set_token(token, "NUM", lexem, "INT");
+		token = set_token(token, "NUM", lexem, "INT", INT);
 	
 	else if(state == REAL)
-		token = set_token(token, "NUM", lexem, "REAL");
+		token = set_token(token, "NUM", lexem, "REAL", REAL);
 	
 	else if(state == STR)
-		token =	set_token(token, "STR", lexem, "\0");
+		token =	set_token(token, "STR", lexem, "\0", STR);
 	
 	
 	else if(state == _ATRIB_ || state == OPER || state == _OPER_)
-		token = set_token(token, "OPR", lexem, "\0");
+		token = set_token(token, "OPR", lexem, "\0", OPER);
 
 	else if(state == ATRIB)
-		token = set_token(token, "ATRIB", lexem, "\0");
+		token = set_token(token, "ATRIB", lexem, "\0", RCB);
 
 	
 	else if(state == ARITM)
-		token = set_token(token, "OPM", lexem, "\0");
+		token = set_token(token, "OPM", lexem, "\0", ARITM);
 
 	
 	else if(state == COMMENT){token.set=0;}
 	else if(state == ERROR){} //token = set_token(token, "ERRO", lexem, "\0");
 
 	else if(state == _eof_)
-		token =	set_token(token, "Eof", "End of file", "\0");
+		token =	set_token(token, "Eof", "End of file", "\0", $);
 
 	else if(state == AB_P)
-		token =	set_token(token, "AB_P", lexem, "\0");
+		token =	set_token(token, "AB_P", lexem, "\0", AB_P);
 	
 	else if(state == FC_P)
-		token =	set_token(token, "FC_P", lexem, "\0");
+		token =	set_token(token, "FC_P", lexem, "\0", FC_P);
 	
 	else if(state == PT_V)
-		token = set_token(token, "PT_V", lexem, "\0");
+		token = set_token(token, "PT_V", lexem, "\0", PT_V);
 	
 	else if(state == EXP)
-		token = set_token(token, "NUM", lexem, "EXP");
+		token = set_token(token, "NUM", lexem, "EXP", REAL);
 
 	else{token.set=0;}
 	

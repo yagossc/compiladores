@@ -28,5 +28,10 @@
 #define BUFFER 256
 
 //Sintatic analyzer MACROS
-//...
+
+//Instead of char token_name[]
+//we'll use int token_name
+#define NUM 20
+#define RCB 21
+#define $ 22
 #endif

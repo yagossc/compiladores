@@ -128,29 +128,25 @@ int main(int argc, char *argv[])
 			i++;
 		}
 	}
-	i=0;
+	
+	//Check for lexic error
 	if(state == ERROR) die_f("Token not indentified.", file, row+1, col+1);
+
+	//Insert $ sign in list's last position
+
+
 	while(list->head != list->tail)
 	{
 		list_get(list);
 	}
 	list_get(list);
 
-/*	printf("\n\n\nDiv\n\n\n");
-	while(input_buffer->buffer[i].set)
-	{
-		print_token(input_buffer->buffer[i]);
-		i++;
-	}*/
-
-//	printf("\n\n\nDiv\n\n\n");
-	//Check for error state
 
 	//Close stream and free heap
 	fclose(file);
 	free(lexem);
 	free(table);
 	free_stack(stack);
-
+	
 	return 0;
 }

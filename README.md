@@ -45,7 +45,8 @@ TO DO
 > - **Salvar o lexema para poder passá-lo adiante**(OK!!);
 > - **Count line feed for line information in ERROR message**(OK! COLUNA TB!);
 > - **Operadores relacionais >=, <=, <> não implementados corretamente**(CORRIGIDO!);
-> - **Como passar a tabela de símbolos para o parser**(POR ENQUANTO É SÓ PRINTAR AS ENTRADAS DA TABELA NA TELA);
+> - **Como passar a tabela de símbolos para o parser**(POR ENQUANTO É SÓ PRINTAR AS ENTRADAS DA TABELA NA TELA) (OK!!);
+> - **Alterar estrutura dos tokens para facilitar o uso dos MACROS e por consequência ter maior controle sobre as comparações no algorítmo interpretador da tabela sintática**;
 
 > **Hashmap**(TABELA DE SÍMBOLOS);
 > - _O uso do hashmap é importante para facilitar o tratamento dos tokens passados a frente. Ponteiros e referências são manipulados mas eficientemente do que as strings em si._
