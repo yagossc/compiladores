@@ -325,7 +325,7 @@ t_token state_resolver(int state, char *lexem, t_hashmap *table)
 		token = set_token(token, "OPR", lexem, "\0", OPER);
 
 	else if(state == ATRIB)
-		token = set_token(token, "ATRIB", lexem, "\0", RCB);
+		token = set_token(token, "ATRIB", lexem, "\0", rcb);
 
 	
 	else if(state == ARITM)
