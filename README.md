@@ -36,6 +36,7 @@ FILES
 > - **prep/tables/tabela_sintatica.ods**;
 > - **prep/tables/tabela_sintatica.pdf**;
 > - **prep/tables/tabela_transicao.pdf**;
+
 TO DO
 ===================
 > - **Reconhecer ponto e vírgula**(OK!);
