@@ -30,7 +30,12 @@ FILES
 > - **test/test.txt**;
 > - **test/teste.txt**;
 > - **unity_tests/logic.c**(_arquivo de testes indiscriminados_);
-
+> - **prep/automata/automatoP2** (_arquivo draw.io_);
+> - **prep/automata/automatoP2-CORRETO.html**;
+> - **prep/automata/automatoP2.html**;
+> - **prep/tables/tabela_sintatica.ods**;
+> - **prep/tables/tabela_sintatica.pdf**;
+> - **prep/tables/tabela_transicao.pdf**;
 TO DO
 ===================
 > - **Reconhecer ponto e vírgula**(OK!);
@@ -60,6 +65,7 @@ STUDY
 ===================
 
 > - **Capítulo 1 e 2 - Tabela de símbolos**;
+> - **Capítulo 4 - SLR(0) [ _tem o manual do trabalho no livro, só que mais bem explicado_ ] 
 > - **Hashmap (LCTHW)**;
 
 DÚVIDAS
