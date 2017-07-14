@@ -7,30 +7,37 @@ USAGE
 
 **> make**
 
-**> ./scanner ../test/font**
+**> ./sintatic ../input/font**
 > Arquivo com exemplo de erro:
 
-**> ./scanner ../test/test.txt**
+**> ./sintatic ../input/test.txt**
 > Arquivo com combinações arbitrárias de tokens:
 
-**> ./scanner ../test/teste.txt**
+**> ./sintatic ../input/teste.txt**
 
 FILES
 ==================
 > - **README.md**;
 > - **src/Makefile**;
-> - **src/scanner.c**;
-> - **src/resolver.c**;
+> - **src/sintatic_analyser.c**;
+> - **src/lexic_resolver.c**;
+> - **src/sintatic_resolver.c**;
+> - **src/data_sctructures.c**;
 > - **src/hashmap.c**(_nao usado de fato na execução_);
+
 > - **util/defines.h**;
 > - **util/table.h**;
-> - **util/resolver.h**;
+> - **util/lexic_resolver.h**;
+> - **util/sintatic_resolver.h**;
+> - **util/data_sctructures.h**;
 > - **util/sintatic_table.h**;
 > - **util/hashmap.h**(_nao usado de fato na execução_);
-> - **test/fonte**(_fonte do trabalho_);
-> - **test/test.txt**;
-> - **test/teste.txt**;
-> - **unity_tests/logic.c**(_arquivo de testes indiscriminados_);
+
+> - **input/fonte**(_fonte do trabalho_);
+> - **input/test.txt**;
+> - **input/teste.txt**;
+> - **test/unity_tests/logic.c**(_arquivo de testes indiscriminados_);
+
 > - **prep/automata/automatoP2** (_arquivo draw.io_);
 > - **prep/automata/automatoP2-CORRETO.html**;
 > - **prep/automata/automatoP2.html**;

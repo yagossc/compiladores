@@ -8,6 +8,10 @@
 #include "../util/table.h"
 #include "../util/sintatic_table.h"
 #include "../util/lexic_resolver.h"
+#include "../util/data_structures.h"
+#include "../util/sintatic_resolver.h"
+
+
 
 //Global variable for error's row
 unsigned int row = 0;
@@ -127,8 +131,6 @@ int sintatic(int state, int symbol, t_stack *stack)
 		return OK;
 	}
 }
-
-
 
 int main(int argc, char *argv[])
 {
