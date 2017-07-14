@@ -15,6 +15,19 @@ USAGE
 
 **> ./sintatic ../input/teste.txt**
 
+
+NOTES TO THE TEACHER
+==================
+> - The file "sintatic_analyser.c" is our main;
+> - It calls first the lexic_resolver.c and an internal routine to do the lexcic analysis;
+> - Then it calls the sintatic_resolver.c to the sinstatic analysis;
+> - In our main (sintatic_analyser.c), our IP pointer is the pointer "list" (pointed to a struct type List, available in data_structure.c);
+> - The automata is available in ~/prep/automata/, and of course, through the ~/util/sintatic_table.h;
+> - The files in ~/prep/ were part of the software's construction process.
+> - Any doubts, please contact me, if you are or were my teacher, you probably have my e-mail address already.
+> - Thank you for the course, have a nice vacation (:
+
+
 FILES
 ==================
 > - **README.md**;
