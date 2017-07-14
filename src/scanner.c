@@ -6,6 +6,7 @@
 #include <math.h>
 #include "../util/defines.h" //Custom MACRO defines
 #include "../util/table.h"
+#include "../util/sintatic_table.h"
 #include "../util/resolver.h"
 
 //Global variable for error's row
@@ -28,6 +29,18 @@ void die(char* message)
 
 //Terminate execution and close source file stream on error
 void die_f(char* message, FILE *file, int row, int col)
+{
+        if(errno) {
+                perror(message);
+        } else {
+                printf("ERROR: %s at line[%d] col[%d]\n", message, row, col);
+        }
+	fclose(file);
+        exit(1);
+}
+
+//Terminate execution and close source file stream on error
+void die_f2(char* message, FILE *file)
 {
         if(errno) {
                 perror(message);
@@ -73,6 +86,49 @@ int lexic(FILE *file, char *lexem)
 
 }
 
+//Determines status of sintatic analysis according to sintatic table
+//View: ~/util/sintatic_table.h
+int sintatic(int state, int symbol, t_stack *stack)
+{
+	//If it's an acceptance item
+	if(sintable[state][symbol] == ACC)
+		return ACC;
+
+	//Check for error
+	else if(sintable[state][symbol] == ERR)
+		return ERR;
+
+	//If it's a push item in the table
+	else if(sintable[state][symbol] < REDUCE &&  sintable[state][symbol] > STACK)
+	{
+		stack_up(stack, symbol);
+		stack_up(stack, sintable[state][symbol]%100);
+		return OK;
+	}
+	
+	//If it's a reduction item in the table
+	else if(sintable[state][symbol] > REDUCE)
+	{
+		//Pop 2*|B| from stack
+		stack_down(stack,production_length(sintable[state][symbol]));
+
+		//Store state on top of the stack
+		int aux_state = stack->top->value;
+
+		//Get the left side of the production subjected to reduction
+		int production = get_production(sintable[state][symbol]);
+
+		//Push to stack the non-terminal of the reduction
+		stack_up(stack, production);
+
+		//Push to stack the state determined by the non-terminal and the current top of the stack state
+		stack_up(stack, sintable[aux_state][production]);
+		
+		return OK;
+	}
+}
+
+
 
 int main(int argc, char *argv[])
 {
@@ -100,12 +156,16 @@ int main(int argc, char *argv[])
 	initialize_table(table);
 	
 	//Allocate S.A. input buffer(list)
+	//Actually, the pointer *list is the ip pointer mentioned in the
+	//assignment's manual of implementation
 	t_list *list = malloc(sizeof(t_list));
 
 	//Allocate S.A. input buffer
 	s_buffer *input_buffer = malloc(sizeof(s_buffer));
 
 	//Initialize buffer
+	//I still don't know why, but i could correctly fetch the tokens
+	//directly into the list, so I'm using this buffer
 	initialize_buffer(input_buffer);
 
 	//Create stack for stack_automata
@@ -124,7 +184,6 @@ int main(int argc, char *argv[])
 		{
 			//print_token(token);
 			list_insert(list, &input_buffer->buffer[i]);
-			stack_up(stack, &input_buffer->buffer[i]);
 			i++;
 		}
 	}
@@ -132,15 +191,32 @@ int main(int argc, char *argv[])
 	//Check for lexic error
 	if(state == ERROR) die_f("Token not indentified.", file, row+1, col+1);
 
-	//Insert $ sign in list's last position
 
+	//Sintatic Analyser portion
+	
+	//Push initial state into Stack automata
+	stack_up(stack, 0);
 
-	while(list->head != list->tail)
+	//Status flag
+	int status = OK;
+
+	//Input symbol
+	int a = list_get(list);
+
+	while(status != ERR && status != ACC)
 	{
-		list_get(list);
+		if(stack->top != stack->bot)
+		{
+			if(stack->top->prev->value < NTerm)
+				a = list_get(list);
+		}
+		status = sintatic(stack->top->value, a, stack);
 	}
-	list_get(list);
 
+	if(status == ERR) die_f2("[SYSTEM]: Sintatic Error Found. Aborting.", file);
+
+	else if(status == ACC)
+		printf("[INFO]: Sintatic analysis concluded with no errors.\n");
 
 	//Close stream and free heap
 	fclose(file);

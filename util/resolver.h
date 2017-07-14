@@ -21,13 +21,17 @@ typedef struct Buffer
 	t_token buffer[SIZE];
 }s_buffer;
 
-typedef struct Element
+typedef struct SElement
 {
-	int is_state;
-	int state;
-	t_token *token;
-	struct Element *prev;
+	int value;
+	struct SElement *prev;
 }t_element;
+
+typedef struct LElement
+{
+	t_token *token;
+	struct LElement *prev;
+}l_element;
 
 typedef struct List
 {
@@ -41,13 +45,19 @@ typedef struct Stack
 	t_element *top;
 }t_stack;
 
+int production_length(int r_item);
+
+int get_production(int r_item);
+
 void list_insert(t_list *list, t_token *token);
 
-void list_get(t_list *list);
+int list_get(t_list *list);
 
-void stack_up(t_stack *stack, t_token *token);
+void stack_up(t_stack *stack, int value);
 
-void stack_down(t_stack *stack);
+void stack_down(t_stack *stack, int times);
+
+void stack_down_once(t_stack *stack);
 
 void free_stack(t_stack *stack);
 
