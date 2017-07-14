@@ -7,7 +7,7 @@
 #include "../util/defines.h" //Custom MACRO defines
 #include "../util/table.h"
 #include "../util/sintatic_table.h"
-#include "../util/resolver.h"
+#include "../util/lexic_resolver.h"
 
 //Global variable for error's row
 unsigned int row = 0;

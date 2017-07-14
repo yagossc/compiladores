@@ -2,10 +2,10 @@ CC=gcc
 CFLAGS=-Wall -g
 
 all:
-	$(CC) scanner.c resolver.c  -o scanner -lm
+	$(CC) sintatic_analyser.c lexic_resolver.c  -o sintatic -lm
 
 table:
 	$(CC) hashmap.c -o hash -lm
 
 clean:
-	rm -f scanner hash
+	rm -f sintatic hash

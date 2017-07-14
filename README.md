@@ -25,6 +25,7 @@ FILES
 > - **util/defines.h**;
 > - **util/table.h**;
 > - **util/resolver.h**;
+> - **util/sintatic_table.h**;
 > - **util/hashmap.h**(_nao usado de fato na execução_);
 > - **test/fonte**(_fonte do trabalho_);
 > - **test/test.txt**;
