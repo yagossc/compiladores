@@ -14,46 +14,29 @@
 
 
 //Global variable for error's row
-unsigned int row = 0;
+unsigned int row = 1;
 //Global variable for error's column
 unsigned int col = 0;
 //Auxiliary global var. for counting columns
 unsigned int aux_col = 0;
 
 //Terminate execution on error
-void die(char* message)
+void die(char* message, FILE *file, int row, int col)
 {
-        if(errno) {
-                perror(message);
-        } else {
-                printf("ERROR: %s\n", message);
-        }
-        exit(1);
+	if(errno){
+		perror(message);
+	}
+	else if(row == 0 && col == 0){
+		printf("ERRO: %s.\n", message);
+	}
+	else{
+		printf("ERRO: %s linha[%d] coluna[%d]\n", message, row, col);
+	}
+	if(file != NULL)
+		fclose(file);
+	exit(1);
 }
 
-//Terminate execution and close source file stream on error
-void die_f(char* message, FILE *file, int row, int col)
-{
-        if(errno) {
-                perror(message);
-        } else {
-                printf("ERROR: %s at line[%d] col[%d]\n", message, row, col);
-        }
-	fclose(file);
-        exit(1);
-}
-
-//Terminate execution and close source file stream on error
-void die_f2(char* message, FILE *file)
-{
-        if(errno) {
-                perror(message);
-        } else {
-                printf("ERROR: %s at line[%d] col[%d]\n", message, row, col);
-        }
-	fclose(file);
-        exit(1);
-}
 
 //Determines state according to table automata
 //View: ~/util/table.h
@@ -61,7 +44,6 @@ int lexic(FILE *file, char *lexem)
 {
 	int state = _init_;
 	char c = fgetc(file);
-	char *lex = malloc(sizeof(char)*BUFFER);
 	int i = 0;
 	memset(lexem, '\0', BUFFER);
 
@@ -83,11 +65,15 @@ int lexic(FILE *file, char *lexem)
 		c = fgetc(file);
 	
 	}
-	if(state != _init_ && c != '"' && c != '}') ungetc(c, file);
-	else if (c == '"') lexem[i] = c;
-	if(c == EOF) col = aux_col-1;
-	return state;
 
+	if(state != _init_ && c != '"' && c != '}')
+		ungetc(c, file);
+	else if (c == '"')
+		lexem[i] = c;
+	if(c == EOF)
+		col = aux_col-1;
+
+	return state;
 }
 
 //Determines status of sintatic analysis according to sintatic table
@@ -134,27 +120,23 @@ int sintatic(int state, int symbol, t_stack *stack)
 
 int main(int argc, char *argv[])
 {
-	int state;
+	int state = _init_;
 	int i = 0;
 
 	//Check correct usage
 	if(argc != 2)
-		die("USAGE: scanner <filename>");
-
-	char *lexem= malloc(sizeof(char)*BUFFER);
+		die("USAGE: scanner <filename>", NULL, 0, 0);
 
 	//Open source file and check for error
 	FILE *file = fopen(argv[1], "r");
-	if(!file) die("Could not open file.");
+	if(!file) die("Could not open file.", NULL, 0, 0);
 
-	//Initialize clean token
-	t_token token = {.set = 0, .token_name="", .lexem="", .attribute=""};
-
-	//Allocate hashmap
-	t_hashmap *table = malloc(sizeof(t_hashmap));
+	char *lexem= malloc(sizeof(char)*BUFFER);
+	t_token token;
 
 	//Initialize table with command words
 	//View: resolver.c
+	t_hashmap *table = malloc(sizeof(t_hashmap));
 	initialize_table(table);
 	
 	//Allocate S.A. input buffer(list)
@@ -191,7 +173,7 @@ int main(int argc, char *argv[])
 	}
 	
 	//Check for lexic error
-	if(state == ERROR) die_f("Token not indentified.", file, row+1, col+1);
+	if(state == ERROR) die("Token not indentified.", file, row+1, col+1);
 
 
 	//Sintatic Analyser portion
@@ -205,17 +187,21 @@ int main(int argc, char *argv[])
 	//Input symbol
 	int a = list_get(list);
 
-	while(status != ERR && status != ACC)
-	{
-		if(stack->top != stack->bot)
-		{
-			if(stack->top->prev->value < NTerm)
+	state = lexic(file, lexem);
+	token = state_resolver(state, lexem, table);
+	int symbol = token.token_type;
+
+	while(state != ERROR && status != ERR && status != ACC){
+		if(stack->top != stack->bot){
+			if(stack->top->prev->value < NTerm){
+
 				a = list_get(list);
+			}
 		}
 		status = sintatic(stack->top->value, a, stack);
 	}
 
-	if(status == ERR) die_f2("[SYSTEM]: Sintatic Error Found. Aborting.", file);
+	if(status == ERR) die("[SYSTEM]: Sintatic Error Found. Aborting.", file, row+1, col+1);
 
 	else if(status == ACC)
 		printf("[INFO]: Sintatic analysis concluded with no errors.\n");
